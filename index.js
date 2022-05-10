@@ -1,5 +1,5 @@
 const express = require('express');
-    morgan = require('morgan');
+morgan = require('morgan');
 
 const app = express();
 
@@ -20,7 +20,7 @@ let kidsQueerBooks = [
         author: 'Michael Lee Richardson',
         illustrator: 'Maggie Cole',
         coverUrl: 'https://www.penguin.co.uk/content/dam/prh/books/316/316555/9780241433966.jpg.transform/PRHDesktopWide_small/image.jpg',
-        releaseYear: 2020 
+        releaseYear: 2020
 
     },
     {
@@ -70,7 +70,7 @@ let kidsQueerBooks = [
         author: 'Kyle Lukoff',
         illustrator: 'Kaylani Juanita',
         coverUrl: 'https://img.buzzfeed.com/buzzfeed-static/static/2020-02/19/19/asset/7cbde0618b40/sub-buzz-316-1582140393-5.jpg?downsize=700%3A%2A&output-quality=auto&output-format=auto',
-        releaseYear: 2019 
+        releaseYear: 2019
     },
     {
         title: 'Sharice\'s Big Voice',
@@ -93,7 +93,7 @@ let kidsQueerBooks = [
         coverUrl: 'https://images3.penguinrandomhouse.com/cover/700jpg/9780399555312',
         releaseYear: 2018
     },
-        
+
 ];
 
 app.use(express.static('public'));
@@ -120,3 +120,4 @@ app.use((err, req, res, next) => {
 app.listen(8080, () => {
     console.log('Your app is listening on port 8080');
 })
+

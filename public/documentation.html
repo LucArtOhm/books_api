@@ -1,12 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOCUMENTATION</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOCUMENTATION</title>
 </head>
+
 <body>
-    <p>This API will be dedicated to documenting and providing acces to Queer literature for children</p>
+  <p>This API will be dedicated to documenting and providing acces to Queer literature for children</p>
+
+  <h1>Objectives:</h1>
+  <p>
+    This component will function as the server-side of a web application
+    designed to provide users information about a part of the queer children literature scene,
+    including not only book titles with their respective authors but also their illustrators, release dates and more.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <td>BUSINESS LOGIC</td>
+        <td>URL</td>
+        <td>HTTP METHOD</td>
+        <td>REQUEST</td>
+        <td>RESPONSE</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Return a list of all movies to the user</td>
+        <td>/books</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON data object holding data about all the books</td>
+      </tr>
+      <tr>
+        <td>Return data by title to the user</td>
+        <td>/books/:title</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON data object holding data about a single book (author, illustrator, cover url, release year)</td>
+      </tr>
+      <tr>
+        <td>Return names of the authors to the user</td>
+        <td>/books/author</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON data object returning the names the authors</td>
+      </tr>
+      <tr>
+        <td>Return data about author by name</td>
+        <td>/books/author/:name</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON data object holding data about an author (origin, birth year, death year)</td>
+      </tr>
+      <tr>
+        <td>Return names of the illustrators to the user</td>
+        <td>/books/:illustrators</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON data object returning names of illustrators</td>
+      </tr>
+      <tr>
+        <td>Allow new users to register</td>
+        <td>/newUser</td>
+        <td>POST</td>
+        <td>A JSON object holding a structured data system, where new users can register</td>
+        <td>A text indicating whether the user has been successfully registered</td>
+      </tr>
+      <tr>
+        <td>Allow users to update their info (username)</td>
+        <td>/newUsers</td>
+        <td>PUT</td>
+        <td>None</td>
+        <td>A text indicating whether the user’s new information has been successfully saved
+        </td>
+      </tr>
+      <tr>
+        <td>Allow users to add a book to their list of favorites</td>
+        <td>/newUsers/id:/favorites</td>
+        <td>PUT</td>
+        <td>None</td>
+        <td>A text indicating whether the user has successfully added a book to their list</td>
+      </tr>
+      <tr>
+        <td>Allow users to remove a book from their list of favorites</td>
+        <td>/newUsers/id:/favorites</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>A text message indicating whether a book has been successfully removed</td>
+      </tr>
+      <tr>
+        <td>Allow existing users to deregister</td>
+        <td>/newUsers</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>A text message indicating that their e-Mail address has been removed</td>
+      </tr>
+    </tbody>
+  </table>
 </body>
+
 </html>
