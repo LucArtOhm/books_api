@@ -2,6 +2,7 @@ const express = require('express'),
   app = express(),
   bodyParser = require('body-parser'),
   uuid = require('uuid'),
+  mongoose = require('mongoose'),
   morgan = require('morgan');
 
 app.use(bodyParser.json());
