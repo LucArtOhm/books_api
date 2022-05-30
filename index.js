@@ -1,252 +1,48 @@
 const res = require('express/lib/response');
 
 const express = require('express'),
+  app = express(),
   bodyParser = require('body-parser'),
   uuid = require('uuid'),
   mongoose = require('mongoose'),
-  Models = require('./models.js');
-const { request } = require('express');
-morgan = require('morgan');
-const cors = require('cors');
+  Models = require('./models.js'),
+  morgan = require('morgan'),
+  cors = require('cors');
 
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      let message = 'The CORS policy for this application does not allow access from origin ' + origin;
-      return callback(new Error(message), false);
-    }
-    return callback(null, true);
-  }
-}));
-
-app = express(),
-  app.use(morgan('common'));
+app.use(express.static('public'));
+app.use(morgan('common'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const { check, validationResult } = require('express-validator');
+
+let allowedOrigins = '*';
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        // If a specific origin isn’t found on the list of allowed origins
+        let message =
+          "The CORS policy for this application doesn’t allow access from origin " +
+          origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
+
+// Use passport from external files
 let auth = require('./auth')(app);
-
 const passport = require('passport');
-require('./passport');
+require('./passport.js');
 
+// Mongoose Models
 const Books = Models.Book;
 const Users = Models.User;
 
 mongoose.connect('mongodb://localhost:27017/myBooksDB', { useNewUrlParser: true, useUnifiedTopology: true });
-
-
-/* let books = [
-  {
-    Title: "The extraordinary life of Alan Turing",
-    ReadingAge: "7 - 99",
-    Publisher: {
-      Name: "Puffin",
-      OLanguage: "English",
-      ReleaseYear: 2020
-    },
-    Description: "The story of Alan Turing is portrayed",
-    Genre: "Computer Programming",
-    Author: {
-      Name: "Michael Lee Richardson",
-      Origin: "Glasgow, Scottland"
-    },
-    Illustrator: "Freda Chiu",
-    CoverURL: "https://www.penguin.co.uk/content/dam/prh/books/316/316558/9780241434017.jpg.transform/PRHDesktopWide_small/image.jpg",
-    DigitalVersion: true
-  },
-  {
-    Title: "Julian Is a Mermaid",
-    ReadingAge: "4 - 99",
-    Publisher: {
-      Name: "Candlewick",
-      OLanguage: "English",
-      ReleaseYear: 2018
-    },
-    Description: "The story of a boy, whose Grandma encourages his beautiful but different taste for dressing up and living life",
-    Genre: "Myths & Tales",
-    Author: {
-      Name: "Jessica Love",
-      Origin: "California, USA"
-    },
-    Illustrator: "Jessica Love",
-    CoverURL: "https://images.booksense.com/images/458/690/9780763690458.jpg",
-    DigitalVersion: true
-  },
-  {
-    Title: "My Footprints",
-    ReadingAge: "5 - 99",
-    Publisher: {
-      Name: "Capstone Editions",
-      OLanguage: "Language",
-      ReleaseYear: 2019
-    },
-    Description: "A story of courage in the face of uncertainty",
-    Genre: "Bullying",
-    Author: {
-      Name: "Bao Phi",
-      Origin: "Vietnam; USA"
-    },
-    Illustrator: "Basia Tran",
-    CoverURL: "https://img.buzzfeed.com/buzzfeed-static/static/2020-02/19/22/asset/44477077c29e/sub-buzz-501-1582150315-11.jpg?downsize=600:*&output-format=auto&output-quality=auto",
-    DigitalVersion: false
-  },
-  {
-    Title: "Introducing Teddy",
-    ReadingAge: "5 - 99",
-    Publisher: {
-      Name: "BLOOMSBURY",
-      OLanguage: "English",
-      ReleaseYear: 2016
-    },
-    Description: "Gender and Friendship explained through a story",
-    Genre: "Biography",
-    Author: {
-      Name: "Jessica Walton",
-      Origin: "Melbourne, Australia"
-    },
-    Illustrator: "Dougal McPherson",
-    CoverURL: "https://img.buzzfeed.com/buzzfeed-static/static/2020-02/20/19/asset/0c82d8fc0a0f/sub-buzz-788-1582226458-1.jpg?downsize=600:*&output-format=auto&output-quality=auto",
-    DigitalVersion: true
-  },
-  {
-    Title: "The Christmas Truck",
-    ReadingAge: "4 - 99",
-    Publisher: {
-      Name: "Narragarden LLC",
-      OLanguage: "English",
-      ReleaseYear: 2014
-    },
-    Description: "A Christmas story full of adventure with Papa, Dad, an amzing kid, and grandma",
-    Genre: "Christmas",
-    Author: {
-      Name: "J.B. Blankenship",
-      Origin: "Unknown"
-    },
-    Illustrator: "Cassandre Bolan",
-    CoverURL: "https://images.booksense.com/images/408/743/9780990743408.jpg",
-    DigitalVersion: false
-  },
-  {
-    Title: "And Tango Makes Three",
-    ReadingAge: "2 - 99",
-    Publisher: {
-      Name: "Little Simon",
-      OLanguage: "English",
-      ReleaseYear: 2015
-    },
-    Description: "The true story of two male pinguins who became fathers in NYC",
-    Genre: "Adoption",
-    Author: [{
-      Name: "Justin Richardson",
-      Origin: "New York, USA"
-    },
-    {
-      Name: "Peter Parnell",
-      Origin: "New York, USA"
-    }],
-    Illustrator: "Henry Cole",
-    CoverURL: "https://img.buzzfeed.com/buzzfeed-static/static/2020-02/19/20/asset/9bc4c1b086f2/sub-buzz-374-1582143100-10.jpg?downsize=600:*&output-format=auto&output-quality=auto",
-    DigitalVersion: true
-  },
-  {
-    Title: "Prince & Knight",
-    ReadingAge: "4 - 99",
-    Publisher: {
-      Name: "little bee books",
-      OLanguage: "English",
-      ReleaseYear: 2018
-    },
-    Description: "New kind of story expanding the Charming Prince ideology",
-    Genre: "Royalty Tales",
-    Author: {
-      Name: "Daniel Haack",
-      Origin: "Wisconsin, USA"
-    },
-    Illustrator: "Stevie Lewis",
-    CoverURL: "https://img.buzzfeed.com/buzzfeed-static/static/2020-02/19/20/asset/2688b0364b69/sub-buzz-386-1582143959-32.jpg?downsize=600:*&output-format=auto&output-quality=auto",
-    DigitalVersion: false
-  },
-  {
-    Title: "When Aidan became a brother",
-    ReadingAge: "5 - 99",
-    Publisher: {
-      Name: "Lee & Low Books",
-      OLanguage: "English",
-      ReleaseYear: 2019
-    },
-    Description: "A story of a boy who was thought of as a girl when he was born",
-    Genre: "Family",
-    Author: {
-      Name: "Kyle Lukoff",
-      Origin: "Illinois, USA"
-    },
-    Illustrator: "Kaylani Juanita",
-    CoverURL: "https://img.buzzfeed.com/buzzfeed-static/static/2020-02/19/19/asset/7cbde0618b40/sub-buzz-316-1582140393-5.jpg?downsize=700%3A%2A&output-quality=auto&output-format=auto",
-    DigitalVersion: false
-  },
-  {
-    Title: "Sharice\'s Big Voice",
-    ReadingAge: '4 - 99',
-    Publisher: {
-      Name: "HarperCollins",
-      OLanguage: "English",
-      ReleaseYear: 2021
-    },
-    Description: 'The recounting of the first Native, Open Gay, American who made it to congress',
-    Genre: "Biography",
-    Author: [{
-      Name: "Sharice Davids",
-      Origin: "Germany; USA"
-    },
-    {
-      Name: "Nancy K. Mays",
-      Origin: "Kansas, USA"
-    }],
-    Illustrator: "Joshua Mangeshig Pawis-Steckley",
-    CoverURL: "https://images-na.ssl-images-amazon.com/images/I/71jlUAwd5FL.jpg",
-    DigitalVersion: true
-  },
-  {
-    Title: "Stonewall: A Building. An Uprising. A Revolution",
-    ReadingAge: "5 - 99",
-    Publisher: {
-      Name: "Random House Books for Young Readers",
-      OLanguage: "English",
-      ReleaseYear: 2019
-    },
-    Description: "The recounting of Stone Wall",
-    Genre: "Government",
-    Author: {
-      Name: "Rob Sanders",
-      Origin: "Missouri, USA"
-    },
-    Illustrator: "Jamey Christoph",
-    CoverURL: "https://images3.penguinrandomhouse.com/cover/700jpg/9781524719524",
-    DigitalVersion: true
-  },
-  {
-    Title: "Pride: The Story of Harvey Milk and the Rainbow Flag",
-    ReadingAge: "5 - 99",
-    Publisher: {
-      Name: "Random House Books for Young Readers",
-      OLanguage: "English",
-      ReleaseYear: 2018
-    },
-    Description: "The story of Harvey Milk",
-    Genre: "1900s America",
-    Author: {
-      Name: "Rob Sanders",
-      Origin: "Missouri, USA"
-    },
-    Illustrator: "Steven Salerno",
-    CoverURL: "https://images3.penguinrandomhouse.com/cover/700jpg/9780399555312",
-    DigitalVersion: true
-  }
-];
- */
-let users = []
 
 // READ Method (get requests)
 
@@ -355,31 +151,44 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 // CREATE Method (post requests)
 
 // Allow new users to register --- Works as of 18.05.2022 
-app.post('/users', (req, res) => {
-  Users.findOne({ Username: req.body.Username })
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.Username + 'already exists');
-      } else {
-        Users
-          .create({
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
-          })
-          .then((user) => { res.status(201).json(user) })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
-          })
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
-});
+app.post('/users',
+  [
+    check('Username', 'Username is required').isLength({ min: 5 }),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+  ],
+  (req, res) => {
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    Users.findOne({ Username: req.body.Username })
+      .then((user) => {
+        if (user) {
+          return res.status(400).send(req.body.Username + 'already exists');
+        } else {
+          Users
+            .create({
+              Username: req.body.Username,
+              Password: hashedPassword,
+              Email: req.body.Email,
+              Birthday: req.body.Birthday
+            })
+            .then((user) => { res.status(201).json(user) })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error: ' + error);
+            })
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+  });
 
 
 // Allow users to add a book to their list of favorites--- Works as of 23.05.2022 
@@ -435,31 +244,51 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 // UPDATE Method (put requests)
 
 // Allow users to update their user info (username, password, email, date of birth) --- Works as of 18.05.
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate(
-    { Username: req.params.Username },
-    {
-      $set: {
-        Username: req.body.Username,
-        Password: req.body.Password,
-        Email: req.body.Email,
-        Birthday: req.body.Birthday
-      },
-    },
-    { new: true },
-    (err, updatedUser) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      } else {
-        res.json(updatedUser);
-      }
+app.put('/users/:Username',
+  passport.authenticate('jwt', { session: false }),
+  [
+    check('Username', 'Username is required').isLength({ min: 5 }),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+  ],
+  (req, res) => {
+    // check validation object for errors
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
     }
-  )
-})
+
+    Users.findOneAndUpdate(
+      { Username: req.params.Username },
+      {
+        $set: {
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday
+        },
+      },
+      { new: true },
+      (err, updatedUser) => {
+        if (err) {
+          console.error(err);
+          res.status(500).send('Error: ' + err);
+        } else {
+          res.json(updatedUser);
+        }
+      }
+    )
+  })
+
+// Error handling middleware function
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Oh no! something broke!");
+});
 
 // Listen for requests
-app.listen(8080, () => {
-  console.log('Your app is listening on port 8080');
-})
-
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+  console.log('Listening on port ' + port);
+});
