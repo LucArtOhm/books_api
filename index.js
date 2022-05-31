@@ -16,7 +16,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const { check, validationResult } = require('express-validator');
 
-let allowedOrigins = '*';
+let allowedOrigins = [
+  'http://localhost:8080',
+  'https://your-favorite-books.herokuapp.com/'
+];
 app.use(
   cors({
     origin: (origin, callback) => {
