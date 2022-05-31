@@ -45,7 +45,8 @@ require('./passport.js');
 const Books = Models.Book;
 const Users = Models.User;
 
-mongoose.connect('mongodb://localhost:27017/myBooksDB', { useNewUrlParser: true, useUnifiedTopology: true });
+/* mongoose.connect('mongodb://localhost:27017/myBooksDB', { useNewUrlParser: true, useUnifiedTopology: true }); */
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // READ Method (get requests)
 
