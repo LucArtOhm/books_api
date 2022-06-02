@@ -56,14 +56,14 @@ app.get('/', (req, res) => {
 });
 
 // Return a list of ALL books to the user --- Works as of 18.05.
-app.get('/books', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/books', /* passport.authenticate('jwt', { session: false }), */ function (req, res) {
   Books.find()
     .then((books) => {
       res.status(201).json(books);
     })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
+    .catch(function (error) {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
     });
 });
 
