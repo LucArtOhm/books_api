@@ -1,0 +1,117 @@
+{
+    "_id": {
+        "$oid": "628b62f142817ce51cc1310c"
+    },
+    "Username": "Chito",
+    "Password": "chito123",
+    "Email": "chito@gmail.com",
+    "Birthday": {
+        "$date": "1984-05-25T00:00:00Z"
+    },
+    "FavoriteBooks": [
+        {
+            "$oid": "62814dab8a4dc647be90e131"
+        },
+        {
+            "$oid": "62814b8c8a4dc647be90e12d"
+        }
+    ],
+    "__v": 0
+}
+{
+    "_id": {
+        "$oid": "628b6695311774f720167e4d"
+    },
+    "Username": "Polo",
+    "Password": "polo123",
+    "Email": "polo@gmail.com",
+    "Birthday": {
+        "$date": "1985-04-24T00:00:00Z"
+    },
+    "FavoriteBooks": [
+        {
+            "$oid": "6280f7c28a4dc647be90e129"
+        }
+    ],
+    "__v": 0
+}
+{
+    "_id": {
+        "$oid": "628b6712311774f720167e50"
+    },
+    "Username": "Tirano",
+    "Password": "tirano123",
+    "Email": "tirano@gmail.com",
+    "Birthday": {
+        "$date": "1986-03-23T00:00:00Z"
+    },
+    "FavoriteBooks": [
+        {
+            "$oid": "62814b8c8a4dc647be90e12d"
+        }
+    ],
+    "__v": 0
+}
+{
+    "_id": {
+        "$oid": "628b6785311774f720167e53"
+    },
+    "Username": "Marucha",
+    "Password": "marucha123",
+    "Email": "marucha@gmail.com",
+    "Birthday": {
+        "$date": "1987-02-22T00:00:00Z"
+    },
+    "FavoriteBooks": [
+        {
+            "$oid": "6280f86f8a4dc647be90e12c"
+        }
+    ],
+    "__v": 0
+}
+{
+    "_id": {
+        "$oid": "628b67fe311774f720167e56"
+    },
+    "Username": "Gromeli",
+    "Password": "gromeli123",
+    "Email": "gromeli@gmail.com",
+    "Birthday": {
+        "$date": "1988-01-21T00:00:00Z"
+    },
+    "FavoriteBooks": [
+        {
+            "$oid": "6280f86f8a4dc647be90e12c"
+        },
+        {
+            "$oid": "62814cb48a4dc647be90e12f"
+        }
+    ],
+    "__v": 0
+}
+{
+    "_id": {
+        "$oid": "628e3292dfa7f6f44a66ec98"
+    },
+    "Username": "foreverest",
+    "Password": "foreverest123",
+    "Email": "foreverest@gmail.com",
+    "Birthday": {
+        "$date": "1983-10-01T00:00:00Z"
+    },
+    "FavoriteBooks": [],
+    "__v": 0
+}
+{
+    "_id": {
+        "$oid": "6294c3bc6e52aa06ee72df40"
+    },
+    "Username": "cinco",
+    "Password": "$2b$10$dB2A0IWIq7x/Qpf3yGcmy.MmYgIqy92.1Fo/aGS68uwvNEwN93ocW",
+    "Email": "cinco@gmail.com",
+    "Birthday": {
+        "$date": "1984-09-19T00:00:00Z"
+    },
+    "FavoriteBooks": [],
+    "__v": 0
+}
