@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
 });
 
 // Return a list of ALL books to the user --- Works as of 18.05.
-app.get('/books', /* passport.authenticate('jwt', { session: false }), */ function (req, res) {
+app.get('/books', (req, res) => {
     Books.find()
         .then((books) => {
             res.status(201).json(books);
